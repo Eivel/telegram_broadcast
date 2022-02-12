@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	app   = App{}
+	app   = App{Queue: make([]Message, 0)}
 	mutex = sync.Mutex{}
 )
 
