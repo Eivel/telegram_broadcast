@@ -1,0 +1,1 @@
+Telegram Broadcast is a simple webserver for publishing messages over REST API. It was created to work together with a Lua script inside CC: Tweaked Minecraft mod to provide bidirectional communication between a Telegram group and a Minecraft chat, without any external dependencies.
