@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/joho/godotenv"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -19,6 +20,15 @@ var (
 )
 
 func main() {
+	godotenv.Load()
+
+	files, err := os.ReadDir("/run/secrets")
+	if err == nil {
+		for _, file := range files {
+			godotenv.Load(fmt.Sprintf("/run/secrets/%s", file.Name()))
+		}
+	}
+
 	botToken := os.Getenv("BOT_TOKEN")
 	if len(botToken) == 0 {
 		log.Fatalln("BOT_TOKEN not set")
