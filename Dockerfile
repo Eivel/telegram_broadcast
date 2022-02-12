@@ -11,4 +11,5 @@ COPY --from=golang_builder /build/main /app/
 COPY --from=golang_builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=golang_builder /tmp /tmp
 WORKDIR /app
+EXPOSE 3000
 CMD ["./main"]
