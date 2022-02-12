@@ -1,0 +1,18 @@
+version: v1.0
+name: Pipeline 2
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Upload
+    task:
+      jobs:
+        - name: Upload
+          commands:
+            - checkout
+            - echo "$DOCKER_PASSWORD" | docker login  --username "$DOCKER_USERNAME" --password-stdin
+            - 'docker build -f Dockerfile -t $DOCKER_USERNAME/telegram_broadcast:latest -t "$DOCKER_USERNAME/telegram_broadcast:$(git rev-parse --short HEAD)" .'
+            - docker push $DOCKER_USERNAME/telegram_broadcast --all-tags
+      secrets:
+        - name: DockerHub
