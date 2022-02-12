@@ -34,7 +34,7 @@ func main() {
 		log.Fatalln("BOT_TOKEN not set")
 	}
 	chatIDString := os.Getenv("CHAT_ID")
-	if len(botToken) == 0 {
+	if len(chatIDString) == 0 {
 		log.Fatalln("CHAT_ID not set")
 	}
 	chatID, err := strconv.ParseInt(chatIDString, 10, 64)
