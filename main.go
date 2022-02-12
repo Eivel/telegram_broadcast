@@ -6,11 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"sync"
-	"time"
-
-	tele "gopkg.in/telebot.v3"
 )
 
 var (
@@ -23,41 +19,41 @@ func main() {
 	if len(botToken) == 0 {
 		log.Fatalln("BOT_TOKEN not set")
 	}
-	chatIDString := os.Getenv("CHAT_ID")
-	if len(chatIDString) == 0 {
-		log.Fatalln("CHAT_ID not set")
-	}
-	chatID, err := strconv.ParseInt(chatIDString, 10, 64)
-	if err != nil {
-		log.Fatalln("CHAT_ID contains invalid characters")
-	}
+	// chatIDString := os.Getenv("CHAT_ID")
+	// if len(chatIDString) == 0 {
+	// 	log.Fatalln("CHAT_ID not set")
+	// }
+	// chatID, err := strconv.ParseInt(chatIDString, 10, 64)
+	// if err != nil {
+	// 	log.Fatalln("CHAT_ID contains invalid characters")
+	// }
 
 	mux := http.NewServeMux()
 	mux.Handle(fmt.Sprintf("/%s", botToken), app)
 
 	log.Println("Running server...")
-	go http.ListenAndServe(":8089", mux)
+	http.ListenAndServe(":8089", mux)
 
-	b, err := tele.NewBot(tele.Settings{
-		Token:  botToken,
-		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
-	})
-	if err != nil {
-		log.Fatalln("error initializing telegram bot")
-	}
+	// b, err := tele.NewBot(tele.Settings{
+	// 	Token:  botToken,
+	// 	Poller: &tele.LongPoller{Timeout: 10 * time.Second},
+	// })
+	// if err != nil {
+	// 	log.Fatalln("error initializing telegram bot")
+	// }
 
-	b.Handle(tele.OnText, func(c tele.Context) error {
-		if c.Chat().ID != chatID {
-			return nil
-		}
-		mutex.Lock()
-		app.Queue = append(app.Queue, Message{Username: c.Sender().Username, Text: c.Text()})
-		mutex.Unlock()
-		return nil
-	})
+	// b.Handle(tele.OnText, func(c tele.Context) error {
+	// 	if c.Chat().ID != chatID {
+	// 		return nil
+	// 	}
+	// 	mutex.Lock()
+	// 	app.Queue = append(app.Queue, Message{Username: c.Sender().Username, Text: c.Text()})
+	// 	mutex.Unlock()
+	// 	return nil
+	// })
 
-	log.Println("Running bot...")
-	b.Start()
+	// log.Println("Running bot...")
+	// b.Start()
 }
 
 type App struct {
